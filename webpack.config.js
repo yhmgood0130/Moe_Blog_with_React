@@ -1,16 +1,24 @@
+var webpack = require('webpack');
+
 module.exports = {
-    entry: "./src/index.jsx",
-    output: {
-        path: __dirname + '/public/js',
-        filename: "bundle.js"
-    },
-    module: {
-        loaders: [
-            {
-              test: /\.jsx$/,
-              loader: "babel-loader",
-              exclude: /node_modules/
-            }
-        ]
-    }
+  devtool: 'eval',
+  entry: './app-client.js',
+  output: {
+    path: __dirname + '/public/dist',
+    filename: 'bundle.js',
+    publicPath: '/dist'
+  },
+  module: {
+    loaders: [
+      { test: /\.js$/, loaders: 'babel-loader', exclude /node_modules/ },
+      { test: /\.jsx$/, loaders: 'babel-loader'}
+    ]
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.COSMIC_BUCKET': JSON.stringify(process.env.COSMIC_BUCKET),
+      'process.env.COSMIC_READ_KEY': JSON.stringify(process.env.COSMIC_READ_KEY),
+      'process.env.COSMIC_WRITE_KEY': JSON.stringify(process.env.COSMIC_WRITE_KEY)
+    })
+  ]
 };
